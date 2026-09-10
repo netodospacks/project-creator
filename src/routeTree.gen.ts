@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CursoOnlineRouteImport } from './routes/curso-online'
+import { Route as CursoPresencialRouteImport } from './routes/curso-presencial'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CursoOnlineRoute = CursoOnlineRouteImport.update({
+  id: '/curso-online',
+  path: '/curso-online',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CursoPresencialRoute = CursoPresencialRouteImport.update({
+  id: '/curso-presencial',
+  path: '/curso-presencial',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/curso-online': typeof CursoOnlineRoute
+  '/curso-presencial': typeof CursoPresencialRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/curso-online': typeof CursoOnlineRoute
+  '/curso-presencial': typeof CursoPresencialRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/curso-online': typeof CursoOnlineRoute
+  '/curso-presencial': typeof CursoPresencialRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/curso-online' | '/curso-presencial'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/curso-online' | '/curso-presencial'
+  id: '__root__' | '/' | '/curso-online' | '/curso-presencial'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CursoOnlineRoute: typeof CursoOnlineRoute
+  CursoPresencialRoute: typeof CursoPresencialRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/curso-online': {
+      id: '/curso-online'
+      path: '/curso-online'
+      fullPath: '/curso-online'
+      preLoaderRoute: typeof CursoOnlineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/curso-presencial': {
+      id: '/curso-presencial'
+      path: '/curso-presencial'
+      fullPath: '/curso-presencial'
+      preLoaderRoute: typeof CursoPresencialRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CursoOnlineRoute: CursoOnlineRoute,
+  CursoPresencialRoute: CursoPresencialRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
